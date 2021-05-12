@@ -62,8 +62,14 @@ int main(int argc, char *argv[]) {
 
 	// 클라에게 send 한다.
 	write(clnt_sock, message, sizeof(message));
+
+	// 클라 소켓을 닫는다.
 	close(clnt_sock);
+
+	// 서버 소켓을 닫는다.
 	close(serv_sock);
+
+	// 프로세스 반환
 	return 0;
 }
 
