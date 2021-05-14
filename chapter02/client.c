@@ -13,8 +13,9 @@ int main(int argc, char *argv[])
 	int sock;
 	struct sockaddr_in oAddrServer;
 	char message[30];
-	int str_len = 0;
-	int idx = 0, read_len = 0;
+	int nTotalBytes = 0;
+	int nNowRead = 0;
+	int idx = 0;
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if (sock == -1)
@@ -28,19 +29,20 @@ int main(int argc, char *argv[])
 	if (connect(sock, (struct sockaddr *)&oAddrServer, sizeof(oAddrServer)) == -1)
 		error_handling("connect() error!");
 
-	while (read_len = read(sock, &message[idx++], 1))
+	// 1 byte 씩 읽는다.
+	while (nNowRead = read(sock, &message[idx++], 1))
 	{
-		printf("%d %d %d %s\n", read_len, str_len, idx, message);
-		if (read_len == -1)
+		printf("nNowRead: %d, nTotalBytes: %d, idx: %d, message: %s\n", nNowRead, nTotalBytes, idx, message);
+		if (nNowRead == -1)
 		{
 			error_handling("read() error!");
 		}
 
-		str_len += read_len;
+		nTotalBytes += nNowRead;
 	}
 
 	printf("Message from server: %s \n", message);
-	printf("Function read call count: %d \n", str_len);
+	printf("Function read call count: %d \n", nNowRead);
 	close(sock);
 	return 0;
 }
