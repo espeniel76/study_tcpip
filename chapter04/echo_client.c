@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
 		}
 
 		write(nSock, message, strlen(message));
+
+		// read 를 하면서 짤릴 수도 있다. while 루프를 돌면서 받아야 함
 		nSizeString = read(nSock, message, BUF_SIZE - 1);
 		message[nSizeString] = 0;
 		printf("Message from server: %s", message);
