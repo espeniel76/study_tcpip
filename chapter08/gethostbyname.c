@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 	struct hostent *host;
 
 	// main 함수를 통해 전달된 인자로 gethostbyname 함수를 호출하고 있다.
+	// 도메인 이름을 가지고, IP 주소를 포함한 도메인 정보를 얻는 함수다.
 	host = gethostbyname(argv[1]);
 	if (!host)
 	{
