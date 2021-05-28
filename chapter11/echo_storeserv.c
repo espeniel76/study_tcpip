@@ -21,11 +21,7 @@ int main(int argc, char *argv[]) {
 	socklen_t adr_sz;
 	int str_len, state;
 	char buf[BUF_SIZE];
-	if (argc != 2) {
-		printf("Usage : %s <port>\n", argv[0]);
-		exit(1);
-	}
-
+	
 	act.sa_handler = read_childproc;
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = 0;
@@ -35,7 +31,7 @@ int main(int argc, char *argv[]) {
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
-	serv_adr.sin_port = htons(atoi(argv[1]));
+	serv_adr.sin_port = htons(7325);
 
 	if (bind(serv_sock, (struct sockaddr*) &serv_adr, sizeof(serv_adr)) == -1)
 		error_handling("bind() error");
@@ -43,7 +39,9 @@ int main(int argc, char *argv[]) {
 		error_handling("listen() error");
 
 	pipe(fds);
+
 	pid = fork();
+
 	if (pid == 0) {
 		FILE *fp = fopen("echomsg.txt", "wt");
 		char msgbuf[BUF_SIZE];
@@ -89,8 +87,9 @@ void read_childproc(int sig) {
 	pid = waitpid(-1, &status, WNOHANG);
 	printf("removed proc id: %d \n", pid);
 }
-void error_handling(char *message) {
-	fputs(buf, stderr);
+void error_handling(char *message)
+{
+	fputs(message, stderr);
 	fputc('\n', stderr);
 	exit(1);
 }
